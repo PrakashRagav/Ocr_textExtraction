@@ -6,6 +6,13 @@ import numpy as np
 import csv
 from PIL import Image
 import re,os,glob
+import logging 
+
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+                    datefmt='%m-%d %H:%M',
+                    filename='myapp.log',
+                    filemode='w')
 
 def sort_alphaN( l ):
     convert = lambda text: int(text) if text.isdigit() else text
@@ -203,6 +210,7 @@ def cleanText(text):
 if __name__ == '__main__':
     temp = pathlib.PosixPath
     pathlib.PosixPath = pathlib.WindowsPath
+    
     path = pathlib.Path.cwd()
     pdf_path = pathlib.PosixPath(path,'pdfs')
     image_path = pathlib.PosixPath(path,'images')
@@ -210,9 +218,10 @@ if __name__ == '__main__':
 
     pdf_list = list(pdf_path.glob('**/*.pdf'))
     csv_list = list(csv_path.glob('**/*.csv'))
-    l_csv = 0 if len(list) is None else len(list)/2
-    
-    for pdf in pdf_list[int(int(l_csv))::]:
+    l_csv = int(0  if len(csv_list) is None else len(csv_list)/2)
+
+
+    for pdf in pdf_list[l_csv::]:
         head,tail = os.path.split(pdf)
         place = head.split("\\")[-1]
         f_name = tail.replace('.pdf','')
@@ -234,7 +243,7 @@ if __name__ == '__main__':
         csv_list1 = []
         csv_list2 = []
         s_no = 1
-        for img_i in (jpgFilenamesList[2:3]):
+        for img_i in (jpgFilenamesList[2::]):
             img = Image.open(img_i)
             page = np.asarray(img)
 
@@ -262,13 +271,16 @@ if __name__ == '__main__':
                         else:
                             csv_list2.append(strings)               
                         
-                    except ValueError: 
+                    except ValueError as value: 
+                        xx,yy,hh,ww = i
+                        logging.critical(f'error type: {type(value)} coordinates: {str(xx)},{str(yy)},{str(hh)},{str(ww)}')
                         continue
+
             img.close ()
-                            
+
         os.makedirs(clean_csv_path,exist_ok=True)
         os.makedirs(unclean_csv_path,exist_ok=True)
-                            
+
         with open(f'{clean_csv_path}/{f_name}_c.csv', 'w',encoding='utf_8_sig',newline='') as f:
             write = csv.writer(f)
             
