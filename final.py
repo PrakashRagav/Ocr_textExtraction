@@ -212,7 +212,7 @@ if __name__ == '__main__':
     csv_list = list(csv_path.glob('**/*.csv'))
     l_csv = 0 if len(list) is None else len(list)/2
     
-    for pdf in pdf_list[int(int(l_csv)::]:
+    for pdf in pdf_list[int(int(l_csv))::]:
         head,tail = os.path.split(pdf)
         place = head.split("\\")[-1]
         f_name = tail.replace('.pdf','')
