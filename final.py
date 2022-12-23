@@ -209,8 +209,10 @@ if __name__ == '__main__':
     csv_path = pathlib.PosixPath(path,'csv')
 
     pdf_list = list(pdf_path.glob('**/*.pdf'))
-
-    for pdf in pdf_list:
+    csv_list = list(csv_path.glob('**/*.csv'))
+    l_csv = 0 if len(list) is None else len(list)/2
+    
+    for pdf in pdf_list[int(int(l_csv)::]:
         head,tail = os.path.split(pdf)
         place = head.split("\\")[-1]
         f_name = tail.replace('.pdf','')
@@ -220,8 +222,7 @@ if __name__ == '__main__':
         unclean_csv_path = os.path.join(csv_path, place+'\\unclean\\')
 
         os.makedirs(image_place_path,exist_ok=True)
-        os.makedirs(clean_csv_path,exist_ok=True)
-        os.makedirs(unclean_csv_path,exist_ok=True)
+        
 
         print(f_name)
         images = pdf2image.convert_from_path(pdf, grayscale=True, dpi =300)
@@ -264,6 +265,10 @@ if __name__ == '__main__':
                     except ValueError: 
                         continue
             img.close ()
+                            
+        os.makedirs(clean_csv_path,exist_ok=True)
+        os.makedirs(unclean_csv_path,exist_ok=True)
+                            
         with open(f'{clean_csv_path}/{f_name}_c.csv', 'w',encoding='utf_8_sig',newline='') as f:
             write = csv.writer(f)
             
