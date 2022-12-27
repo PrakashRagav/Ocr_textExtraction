@@ -34,7 +34,7 @@ for pdf in pdf_list[l_csv::]:
     textExtract.sort_alphaN(jpgFilenamesList)
     
     csv_str_list =[]
-    for img_i in (jpgFilenamesList[2:3]): 
+    for img_i in (jpgFilenamesList[2:-1]): 
         img = Image.open(img_i)
         page = np.asarray(img)
 
